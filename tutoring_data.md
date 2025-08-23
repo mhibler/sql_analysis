@@ -1,6 +1,7 @@
 # Tutoring Website Data Analysis SQL Queries
-This notebook contains all SQL queries used to analyze activity on a tutoring platform.    
-    
+
+## Introduction
+This file contains all SQL queries used to analyze activity on a tutoring platform.     
 Goal: Allocate tutors efficiently to ensure adequate support while minimizing costs.   
 Questions: What grade level and math courses see the most activity?
 ## Data Loading 
