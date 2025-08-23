@@ -173,9 +173,27 @@ SELECT 11,'IQR', ROUND(iqr_val::NUMERIC, 2) FROM stats_petal_width UNION ALL
 SELECT 12,'Skewness', ROUND(skewness_val::NUMERIC, 2) FROM stats_petal_width;
 ```
 
-OUT PUT
+| Number of Rows |
+|:--------------:|
+|150             |
+
+| Number of columns |
+|:-----------------:|
+|5                  |
+
+| Column Name      | Data Type|
+|:----------------:|:------------------:|
+|column_name	   |data_type
+|sepal_width	   |real
+|petal_length	   |real
+|petal_width	   |real
+|species	       |character varying
+
+### Interpreting the Output:
+The dataset contains four continuous numerical columns and one categorical column (species). Numerical measurements serve as independent variables, while species is the dependent variable. With 150 rows and no null values, the data is clean. Petal length and petal width show negative skew as the mean and median differ, as well as the mode being noticeably lower, suggesting certain species have consistently smaller petals. The petal length distribution indicates potential clumping at smaller values. This pattern likely corresponds to species differences, supporting the hypothesis that petal length depends on species. 
+Sepal length and petal length are chosen as the key variable pair for further analysis.
  
-# Grouping Data By Species
+## Grouping Data By Species
 Now we can aggregate the data to summarize measurements by species.
 ```sql
 -- examining the setosa table
@@ -383,9 +401,28 @@ SELECT 11,'IQR', ROUND(iqr_val::NUMERIC, 2) FROM stats_petal_length UNION ALL
 SELECT 12,'Skewness', ROUND(skewness_val::NUMERIC, 2) FROM stats_petal_length;
 ```
 ## Analyzing the Data
-Heatmaps shows that sepal_length and petal_length are strignly correlated
+We can calculare correlation and examine boxplots 
 ```sql 
 SELECT CORR(sepal_length, petal_length) FROM iris;
 ```
+Boxplots show setosas have the smallest measurements, followed by versicolor and virginica. A few outliers exist but are retained, as they likely reflect natural variations. The heatmaps indicate strong correlations between sepal length and petal width for versicolor and virginica, but low correlation for setosa. Setosa measurements are generally moderate in terms of correlation compared to the other species.
 
 ## Modeling the Data
+The lines of best fit are as follows:
+For Setosa Petal Length vs. Sepal Length:
+The slope is: 0.5360629067245112.
+The y-intercept is: 4.2212039045553125.
+
+For Versicolor Petal Length vs. Sepal Length:
+The slope is: 0.8282809611829947.
+The y-intercept is: 2.4075231053604456.
+
+For Virginica Petal Length vs. Sepal Length:
+The slope is: 0.9957386363636368.
+The y-intercept is: 1.0596590909090882.
+
+## Analysis of Models
+Lines of best fit for each species show different slopes and intercepts, suggesting the petal and sepal length relationship depends on species. Residuals for versicolor and virginica are normally distributed, indicating good linear fits, with R² values of 0.56 and 0.74. Setosa shows weak correlation (R² = 0.068) and less randomized residuals, implying petal length minimally predicts sepal length for this species.
+
+## Conclusion
+Petal length and sepal length show a strong positive relationship (R² = 0.87) and vary distinctly by species. Setosas are the smallest (avg. sepal 5.01, petal 1.46), while virginicas are the largest (avg. sepal 6.59, petal 5.55). The models for each species have normally distributed residuals and differing slopes/intercepts, suggesting petal and sepal lengths can reliably predict species.
