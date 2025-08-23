@@ -3,7 +3,7 @@
 
 ## Introduction
 The Iris dataset contains four measurements from iris flowers: sepal length, sepal width, petal length, and petal width, along with the species label (Setosa, Versicolor, Virginica).  
-**Goal:**  Use SQL to explore the data, summarize key features, and draw insights about differences across species.  
+**Goal:**  Use SQL to explore the data, summarize key features, and draw insights about differences across species.
 **Questions:**
 1) Which measurements are strongly correlated?
 2) How do measurements vary by species?
@@ -241,7 +241,7 @@ SELECT 12,'Skewness', ROUND(skewness_val::NUMERIC, 2) FROM stats_petal_width;
 |IQR	            |3.5
 |Skewness	        |-1.01
 
-### Petal Length Statistics
+### Petal Width Statistics
 |    statistic   	| value |
 |:-----------------:|:-----:|
 |Mean	            |1.2
@@ -256,7 +256,6 @@ SELECT 12,'Skewness', ROUND(skewness_val::NUMERIC, 2) FROM stats_petal_width;
 ||Q3	            |1.8
 |IQR	            |1.5
 |Skewness	        |-0.4
-
 
 ### Interpreting the Output:
 The dataset contains four continuous numerical columns and one categorical column (species). Numerical measurements serve as independent variables, while species is the dependent variable. With 150 rows and no null values, the data is clean. Petal length and petal width show negative skew as the mean and median differ, as well as the mode being noticeably lower, suggesting certain species have consistently smaller petals. The petal length distribution indicates potential clumping at smaller values. This pattern likely corresponds to species differences, supporting the hypothesis that petal length depends on species. 
@@ -469,11 +468,116 @@ SELECT 10,'Q3', ROUND(q3_val::NUMERIC, 2) FROM stats_petal_length UNION ALL
 SELECT 11,'IQR', ROUND(iqr_val::NUMERIC, 2) FROM stats_petal_length UNION ALL
 SELECT 12,'Skewness', ROUND(skewness_val::NUMERIC, 2) FROM stats_petal_length;
 ```
+### Setosa Sepal Length Statistics
+|    statistic   	| value |
+|:-----------------:|:-----:|
+|Mean	            |5.01
+|Median          	|5
+|Mode	            |5
+|Minimum	        |4.3
+|Maximum	        |5.8
+|Range	            |1.5
+|Standard Deviation	|0.35
+|Variance	        |0.12
+|Q1	                |4.8
+||Q3	            |5.2
+|IQR	            |0.4
+|Skewness	        |0.05
+
+### Setosa Petal Length Statistics
+|    statistic   	| value |
+|:-----------------:|:-----:|
+|Mean	            |1.46
+|Median	            |1.5
+|Mode	            |1.5
+|Minimum	        |1
+|Maximum	        |1.9
+|Range	            |0.9
+|Standard Deviation	|0.17
+|Variance	        |0.03
+|Q1	                |1.4
+|Q3	                |1.58
+|IQR	            |0.18
+|Skewness	        |-0.62
+
+### Versicolor Sepal Length Statistics
+|    statistic   	| value |
+|:-----------------:|:-----:|
+|Mean	            |5.94
+|Median          	|5.9
+|Mode	            |5.5
+|Minimum	        |4.9
+|Maximum	        |7
+|Range	            |2.1
+|Standard Deviation	|0.52
+|Variance	        |0.27
+|Q1	                |5.6
+||Q3	            |6.3
+|IQR	            |0.7
+|Skewness	        |0.21
+
+### Versicolor Petal Length Statistics
+|    statistic   	| value |
+|:-----------------:|:-----:|
+|Mean	            |4.26
+|Median	            |4.35
+|Mode	            |4.5
+|Minimum	        |3
+|Maximum	        |5.1
+|Range	            |2.1
+|Standard Deviation	|0.47
+|Variance	        |0.22
+|Q1	                |4
+|Q3	                |4.6
+|IQR	            |0.6
+|Skewness	        |-0.57 
+
+### Virginica Sepal Length Statistics
+|    statistic   	| value |
+|:-----------------:|:-----:|
+|Mean	            |6.59
+|Median          	|6.5
+|Mode	            |6.3
+|Minimum	        |4.9
+|Maximum	        |7.9
+|Range	            |3
+|Standard Deviation	|0.64
+|Variance	        |0.4
+|Q1	                |6.22
+||Q3	            |6.9
+|IQR	            |0.68
+|Skewness	        |0.42
+
+### Virginica Petal Length Statistics
+|    statistic   	| value |
+|:-----------------:|:-----:|
+|Mean	            |5.55
+|Median	            |5.55
+|Mode	            |5.1
+|Minimum	        |4.5
+|Maximum	        |6.9
+|Range	            |2.4
+|Standard Deviation	|0.55
+|Variance	        |0.3
+|Q1	                |5.1
+|Q3	                |5.88
+|IQR	            |0.78
+|Skewness	        |0.01
+BAR CHART
+BOXX PLOTS
+
+
+### Reflecting on the Data
+After exploring the data, petal and sepal lengths from smallest to largest are Setosa, Versicolor, andVirginica. Negative skew in Setosa and Versicolor petal lengths suggests non-normal distributions. Separating data by species improves model accuracy for species-specific patterns, though it may reduce generalizability. Overall, the data indicate that petal and sepal lengths can help predict species.
+
 ## Analyzing the Data
-We can calculare correlation and examine boxplots 
+We can calculate correlation and examine the boxplots. 
 ```sql 
 SELECT CORR(sepal_length, petal_length) FROM iris;
 ```
+| correlation between sepal length and petal length |
+|:-------------------------------------------------:|
+|0.8717541657           
 Boxplots show setosas have the smallest measurements, followed by versicolor and virginica. A few outliers exist but are retained, as they likely reflect natural variations. The heatmaps indicate strong correlations between sepal length and petal width for versicolor and virginica, but low correlation for setosa. Setosa measurements are generally moderate in terms of correlation compared to the other species.
 
 ## Modeling the Data
