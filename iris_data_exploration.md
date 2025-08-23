@@ -189,6 +189,75 @@ SELECT 12,'Skewness', ROUND(skewness_val::NUMERIC, 2) FROM stats_petal_width;
 |petal_width	   |real
 |species	       |character varying
 
+| Count of NULL values |
+|:--------------------:|
+|0
+
+### Sepal Length Statistics
+|    statistic   	| value |
+|:-----------------:|:-----:|
+|Mean	            |5.84
+|Median          	|5.8
+|Mode	            |5
+|Minimum	        |4.3
+|Maximum	        |7.9
+|Range	            |3.6
+|Standard Deviation	|0.83
+|Variance	        |0.69
+|Q1	                |5.1
+||Q3	            |6.4
+|IQR	            |1.3
+|Skewness	        |0.16
+
+### Sepal Width Statistics
+|    statistic   	| value |
+|:-----------------:|:-----:|
+|Mean	            |3.05
+|Median	            |3
+|Mode	            |3
+|Minimum	        |2
+|Maximum	        |4.4
+|Range	            |2.4
+|Standard Deviation	|0.43
+|Variance	        |0.19
+|Q1	                |2.8
+|Q3	                |3.3
+|IQR	            |0.5
+|Skewness	        |0.37
+
+### Petal Length Statistics
+|    statistic   	| value |
+|:-----------------:|:-----:|
+|Mean	            |3.76
+|Median	            |4.35
+|Mode	            |1.5
+|Minimum	        |1
+|Maximum	        |6.9
+|Range	            |5.9
+|Standard Deviation	|1.76
+|Variance	        |3.11
+|Q1	                |1.6
+|Q3	                |5.1
+|IQR	            |3.5
+|Skewness	        |-1.01
+
+### Petal Length Statistics
+|    statistic   	| value |
+|:-----------------:|:-----:|
+|Mean	            |1.2
+|Median	            |1.3
+|Mode	            |0.2
+|Minimum	        |0.1
+|Maximum	        |2.5
+|Range	            |2.4
+|Standard Deviation	|0.76
+|Variance	        |0.58
+|Q1	                |0.3
+||Q3	            |1.8
+|IQR	            |1.5
+|Skewness	        |-0.4
+
+
 ### Interpreting the Output:
 The dataset contains four continuous numerical columns and one categorical column (species). Numerical measurements serve as independent variables, while species is the dependent variable. With 150 rows and no null values, the data is clean. Petal length and petal width show negative skew as the mean and median differ, as well as the mode being noticeably lower, suggesting certain species have consistently smaller petals. The petal length distribution indicates potential clumping at smaller values. This pattern likely corresponds to species differences, supporting the hypothesis that petal length depends on species. 
 Sepal length and petal length are chosen as the key variable pair for further analysis.
