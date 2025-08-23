@@ -2,8 +2,9 @@
 
 ## Introduction
 This file contains all SQL queries used to analyze activity on a tutoring platform.     
-Goal: Allocate tutors efficiently to ensure adequate support while minimizing costs.   
-Questions: What grade level and math courses see the most activity?
+**Goal:** Allocate tutors efficiently to ensure adequate support while minimizing costs.   
+**Questions:** What grade level and math courses see the most activity?
+
 ## Data Loading 
 Creates a table to then import the sample data set into.
 ```sql
