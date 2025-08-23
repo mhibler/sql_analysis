@@ -563,9 +563,41 @@ SELECT 12,'Skewness', ROUND(skewness_val::NUMERIC, 2) FROM stats_petal_length;
 |Q3	                |5.88
 |IQR	            |0.78
 |Skewness	        |0.01
-BAR CHART
-BOXX PLOTS
 
+We can then generate histograms to compare the measurements. For this I used matplotlib to generate the histogram. 
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load the iris dataset
+iris_df = pd.read_csv("iris.csv")
+
+# Plot Petal Length histogram
+plt.figure(figsize=(8, 5))
+for species in iris_df["species"].unique():
+    subset = iris_df[iris_df["species"] == species]
+    plt.hist(subset["petal_length"], bins=15, alpha=0.5, label=species)
+
+plt.title("Petal Length by Species")
+plt.xlabel("Petal Length")
+plt.ylabel("Frequency")
+plt.legend()
+plt.show()
+
+# Plot Sepal Length histogram
+plt.figure(figsize=(8, 5))
+for species in iris_df["species"].unique():
+    subset = iris_df[iris_df["species"] == species]
+    plt.hist(subset["sepal_length"], bins=15, alpha=0.5, label=species)
+
+plt.title("Sepal Length by Species")
+plt.xlabel("Sepal Length")
+plt.ylabel("Frequency")
+plt.legend()
+plt.show()
+```
+![Histogram of Petal Length by Species](petallength.png)
+![Histogram of Sepal Length by Species](sepallength.png)
 
 ### Reflecting on the Data
 After exploring the data, petal and sepal lengths from smallest to largest are Setosa, Versicolor, andVirginica. Negative skew in Setosa and Versicolor petal lengths suggests non-normal distributions. Separating data by species improves model accuracy for species-specific patterns, though it may reduce generalizability. Overall, the data indicate that petal and sepal lengths can help predict species.
