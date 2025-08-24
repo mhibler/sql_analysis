@@ -609,7 +609,54 @@ SELECT CORR(sepal_length, petal_length) FROM iris;
 ```
 | correlation between sepal length and petal length |
 |:-------------------------------------------------:|
-|0.8717541657           
+|0.8717541657
+
+We can then generate visualizations by species. 
+```python
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Load the iris dataset
+iris_df = pd.read_csv("iris.csv")
+
+# Sepal Length Boxplot
+plt.figure(figsize=(6,4))
+sns.boxplot(x='species', y='sepal_length', data=iris_df)
+plt.title("Sepal Length by Species")
+plt.savefig("sepal_length_boxplot.png")  # Save the image
+plt.show()
+
+# Petal Length Boxplot
+plt.figure(figsize=(6,4))
+sns.boxplot(x='species', y='petal_length', data=iris_df)
+plt.title("Petal Length by Species")
+plt.savefig("petal_length_boxplot.png")
+plt.show()
+
+species_colors = {
+    "Iris-setosa": "Blues",
+    "Iris-versicolor": "Oranges",
+    "Iris-virginica": "Greens"
+}
+
+for sp, color in species_colors.items():
+    plt.figure(figsize=(5,4))
+    subset = iris_df[iris_df['species'] == sp].drop('species', axis=1)
+    corr_matrix = subset.corr()  # <-- create correlation matrix
+    sns.heatmap(corr_matrix, annot=True, cmap=color, vmin=-1, vmax=1)
+    plt.title(f"Correlation Heatmap: {sp}")
+    
+    Heatmaps = f"heatmap_{sp.replace('Iris-', '').lower()}.png"
+    plt.savefig(Heatmaps)
+    plt.show()
+```
+![Box plot of Sepal Length by Species](sepalbox.png)
+![Box Plot of Petal Length by Species](petalbox.png)
+![Heatmap of Correlation Values for Setosa](setosacorr.png)
+![Heatmap of Correlation Values for Setosa](versicolorcorr.png)
+![Heatmap of Correlation Values for Setosa](virginicacorr.png)
+
 Boxplots show setosas have the smallest measurements, followed by versicolor and virginica. A few outliers exist but are retained, as they likely reflect natural variations. The heatmaps indicate strong correlations between sepal length and petal width for versicolor and virginica, but low correlation for setosa. Setosa measurements are generally moderate in terms of correlation compared to the other species.
 
 ## Modeling the Data
