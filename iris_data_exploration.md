@@ -782,7 +782,7 @@ plt.tight_layout()
 plt.savefig("r2_heatmaps_all_species.png", dpi=300, bbox_inches="tight")
 plt.show()
 ```
-![R^2 values by Species](r2_heatmaps_all.png)
+![R^2 values by Species](r2_heatmaps_all_species.png)
 ## Analysis of Models
 Lines of best fit for each species show different slopes and intercepts, suggesting the petal and sepal length relationship depends on species. Residuals for versicolor and virginica are normally distributed, indicating good linear fits, with R² values of 0.56 and 0.74. Setosa shows weak correlation (R² = 0.068) and less randomized residuals, implying petal length minimally predicts sepal length for this species.
 
