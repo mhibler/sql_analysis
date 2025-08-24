@@ -654,8 +654,8 @@ for sp, color in species_colors.items():
 ![Box plot of Sepal Length by Species](sepalbox.png)
 ![Box Plot of Petal Length by Species](petalbox.png)
 ![Heatmap of Correlation Values for Setosa](setosacorr.png)
-![Heatmap of Correlation Values for Setosa](versicolorcorr.png)
-![Heatmap of Correlation Values for Setosa](virginicacorr.png)
+![Heatmap of Correlation Values for Versicolor](versicolorcorr.png)
+![Heatmap of Correlation Values for Virginica](virginicacorr.png)
 
 Boxplots show setosas have the smallest measurements, followed by versicolor and virginica. A few outliers exist but are retained, as they likely reflect natural variations. The heatmaps indicate strong correlations between sepal length and petal width for versicolor and virginica, but low correlation for setosa. Setosa measurements are generally moderate in terms of correlation compared to the other species.
 
@@ -673,6 +673,116 @@ For Virginica Petal Length vs. Sepal Length:
 The slope is: 0.9957386363636368.
 The y-intercept is: 1.0596590909090882.
 
+```python 
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+
+# Load data
+iris = pd.read_csv("iris.csv")
+
+# Species color palette
+species_colors = {
+    "Iris-setosa": "blue",
+    "Iris-versicolor": "orange",
+    "Iris-virginica": "green"
+}
+
+# Numeric columns for R² heatmaps
+num_cols = ["sepal_length", "sepal_width", "petal_length", "petal_width"]
+
+# -------------------------
+# Scatterplots with Residuals as points in ONE row
+# -------------------------
+fig, axes = plt.subplots(1, 3, figsize=(18,5))
+
+for ax, (sp, color) in zip(axes, species_colors.items()):
+    subset = iris[iris['species'] == sp]
+    X = subset[['petal_length']]
+    y = subset['sepal_length']
+    
+    # Fit model
+    model = LinearRegression()
+    model.fit(X, y)
+    y_pred = model.predict(X)
+    residuals = y - y_pred
+    
+    # Scatter points for actual data
+    ax.scatter(subset['petal_length'], subset['sepal_length'], color=color, label="Observed")
+    # Regression line
+    ax.plot(subset['petal_length'], y_pred, color='red', linewidth=2, label="Fitted line")
+    # Residuals as points
+    ax.scatter(subset['petal_length'], residuals, color='gray', alpha=0.6, label="Residuals")
+    
+    ax.set_title(f"{sp} Sepal vs Petal")
+    ax.set_xlabel("Petal Length")
+    ax.set_ylabel("Sepal Length / Residuals")
+    ax.legend()
+
+plt.tight_layout()
+plt.savefig("scatter_residuals_points_all_species.png", dpi=300, bbox_inches="tight")
+plt.show()
+```
+![Linear Model and Residuals by Species](lin_model.png)
+```python
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+
+# Load data
+iris = pd.read_csv("iris.csv")
+
+species_colors = {
+    "Iris-setosa": "Blues",
+    "Iris-versicolor": "Oranges",
+    "Iris-virginica": "Greens"
+}
+
+# Numeric columns for R² heatmaps
+num_cols = ["sepal_length", "sepal_width", "petal_length", "petal_width"]
+
+species_colors = {
+    "Iris-setosa": "Blues",
+    "Iris-versicolor": "Oranges",
+    "Iris-virginica": "Greens"
+}
+
+fig, axes = plt.subplots(1, 3, figsize=(18,5))
+
+for ax, (sp, cmap_name) in zip(axes, species_colors.items()):
+    subset = iris[iris['species'] == sp]
+    
+    # Build R² matrix
+    r2_matrix = pd.DataFrame(index=num_cols, columns=num_cols, dtype=float)
+    for col_x in num_cols:
+        for col_y in num_cols:
+            if col_x == col_y:
+                r2_matrix.loc[col_x, col_y] = 1.0
+            else:
+                X = subset[[col_x]]
+                y = subset[col_y]
+                model = LinearRegression()
+                model.fit(X, y)
+                r2_matrix.loc[col_x, col_y] = model.score(X, y)
+    
+    sns.heatmap(
+        r2_matrix.astype(float),
+        annot=True,
+        cmap=cmap_name,  # Use the correct colormap name
+        vmin=0, vmax=1,
+        square=True,
+        cbar=False,
+        ax=ax
+    )
+    ax.set_title(f"{sp} - R² Heatmap")
+
+plt.tight_layout()
+plt.savefig("r2_heatmaps_all_species.png", dpi=300, bbox_inches="tight")
+plt.show()
+```
+![R^2 values by Species](r2_heatmaps_all.png)
 ## Analysis of Models
 Lines of best fit for each species show different slopes and intercepts, suggesting the petal and sepal length relationship depends on species. Residuals for versicolor and virginica are normally distributed, indicating good linear fits, with R² values of 0.56 and 0.74. Setosa shows weak correlation (R² = 0.068) and less randomized residuals, implying petal length minimally predicts sepal length for this species.
 
