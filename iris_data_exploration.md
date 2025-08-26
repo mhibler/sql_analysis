@@ -709,7 +709,7 @@ plt.legend()
 plt.show()
 
 # Plotting the residuals
-plt.figure(figsize = (10,8)) 
+plt.figure(figsize = (9,8)) 
              
 for species, color in species_colors.items():
     subset = iris_df[iris_df["species"] == species]
@@ -746,7 +746,7 @@ plt.ylabel("Residuals")
 plt.title("Residuals vs. Predicted Values")
 plt.show()
 ```
-![Linear Regression Model by Species](Linear_model_fit.png)
+![Linear Regression Model by Species](lin_model_final.png)
 ![Residuals vs. predicted Values by Species](finalresidual.png)
 ## Analysis of Models
 Lines of best fit for each species show different slopes and intercepts, suggesting the petal and sepal length relationship depends on species. Residuals for versicolor and virginica are normally distributed, indicating good linear fits, with R² values of 0.56 and 0.74. Setosa shows weak correlation (R² = 0.068) and less randomized residuals, implying petal length minimally predicts sepal length for this species.
