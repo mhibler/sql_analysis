@@ -206,7 +206,7 @@ SELECT 12,'Skewness', ROUND(skewness_val::NUMERIC, 2) FROM stats_petal_width;
 The dataset contains four continuous numerical columns and one categorical column (species). Numerical measurements serve as independent variables, while species is the dependent variable. With 150 rows and no null values, the data is clean. Petal length and petal width show negative skew as the mean and median differ, as well as the mode being noticeably lower, suggesting certain species have consistently smaller petals. The petal length distribution indicates potential clumping at smaller values. This pattern likely corresponds to species differences, supporting the hypothesis that petal length depends on species. 
 Sepal length and petal length are chosen as the key variable pair for further analysis.
  
-## Grouping Data By Species
+### Grouping Data By Species
 Now we can aggregate the data to summarize measurements by species.
 ```sql
 -- examining the setosa table
