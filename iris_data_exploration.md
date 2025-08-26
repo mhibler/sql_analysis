@@ -694,7 +694,7 @@ plt.show()
 ![Linear Regression Model by Species](lin_model_final.png)
 ![Residuals vs. predicted Values by Species](finalresidual.png)
 ## Analysis of Models
-Lines of best fit for each species show different slopes and intercepts, suggesting the petal and sepal length relationship depends on species. Residuals for versicolor and virginica are normally distributed, indicating good linear fits, with R² values of 0.56 and 0.74. Setosa shows weak correlation (R² = 0.068) and less randomized residuals, implying petal length minimally predicts sepal length for this species.
+Lines of best fit for each species show different slopes and intercepts, suggesting the petal and sepal length relationship depends on species. Residuals for versicolor and virginica roughly follow a normal distribution. R² values of 0.56 and 0.74 for Versicolor and Virginica respectively indicate moderate to strong predictive power. Setosa shows weak correlation (R² = 0.068) in addition to the residuals displaying a slight pattern, implying petal length is a poor predictor of sepal length for this species.
 
 ## Conclusion
 Petal length and sepal length show a strong positive relationship (R² = 0.87) and vary distinctly by species. Setosas are the smallest (avg. sepal 5.01, petal 1.46), while virginicas are the largest (avg. sepal 6.59, petal 5.55). The models for each species have normally distributed residuals and differing slopes/intercepts, suggesting petal and sepal lengths can reliably predict species.
