@@ -253,7 +253,7 @@ SELECT 12,'Skewness', ROUND(skewness_val::NUMERIC, 2) FROM stats_petal_width;
 |Standard Deviation	|0.76
 |Variance	        |0.58
 |Q1	                |0.3
-||Q3	            |1.8
+|Q3	                |1.8
 |IQR	            |1.5
 |Skewness	        |-0.4
 
@@ -480,7 +480,7 @@ SELECT 12,'Skewness', ROUND(skewness_val::NUMERIC, 2) FROM stats_petal_length;
 |Standard Deviation	|0.35
 |Variance	        |0.12
 |Q1	                |4.8
-||Q3	            |5.2
+|Q3	                |5.2
 |IQR	            |0.4
 |Skewness	        |0.05
 
@@ -512,7 +512,7 @@ SELECT 12,'Skewness', ROUND(skewness_val::NUMERIC, 2) FROM stats_petal_length;
 |Standard Deviation	|0.52
 |Variance	        |0.27
 |Q1	                |5.6
-||Q3	            |6.3
+|Q3	                |6.3
 |IQR	            |0.7
 |Skewness	        |0.21
 
@@ -544,7 +544,7 @@ SELECT 12,'Skewness', ROUND(skewness_val::NUMERIC, 2) FROM stats_petal_length;
 |Standard Deviation	|0.64
 |Variance	        |0.4
 |Q1	                |6.22
-||Q3	            |6.9
+|Q3	                |6.9
 |IQR	            |0.68
 |Skewness	        |0.42
 
@@ -567,37 +567,39 @@ SELECT 12,'Skewness', ROUND(skewness_val::NUMERIC, 2) FROM stats_petal_length;
 We can then generate histograms to compare the measurements. For this I used matplotlib to generate the histogram. 
 ```python
 import pandas as pd
+import seaborn as sns
 import matplotlib.pyplot as plt
 
-# Load the iris dataset
+# Loading  the iris dataset
 iris_df = pd.read_csv("iris.csv")
 
-# Plot Petal Length histogram
-plt.figure(figsize=(8, 5))
-for species in iris_df["species"].unique():
-    subset = iris_df[iris_df["species"] == species]
-    plt.hist(subset["petal_length"], bins=15, alpha=0.5, label=species)
+#Assigning colors to each species
+species_colors = {
+    "Iris-setosa": "blue",
+    "Iris-versicolor": "orange",
+    "Iris-virginica": "red"
+}
 
-plt.title("Petal Length by Species")
+# Plot Petal Length histogram
+plt.figure(figsize = (8, 5))
+sns.histplot( data=iris_df, x="petal_length", hue="species", palette=species_colors, bins=30, alpha=0.5, element="step")
+plt.title("Petal Length Histograms by Species")
 plt.xlabel("Petal Length")
 plt.ylabel("Frequency")
-plt.legend()
 plt.show()
+
 
 # Plot Sepal Length histogram
-plt.figure(figsize=(8, 5))
-for species in iris_df["species"].unique():
-    subset = iris_df[iris_df["species"] == species]
-    plt.hist(subset["sepal_length"], bins=15, alpha=0.5, label=species)
-
-plt.title("Sepal Length by Species")
+plt.figure(figsize = (8, 5))
+sns.histplot( data=iris_df, x="sepal_length", hue="species", palette=species_colors, bins=30, alpha=0.5, element="step")
+plt.title("Sepal Length Histograms by Species")
 plt.xlabel("Sepal Length")
 plt.ylabel("Frequency")
-plt.legend()
 plt.show()
+
 ```
-![Histogram of Petal Length by Species](petallength.png)
-![Histogram of Sepal Length by Species](sepallength.png)
+![Histogram of Petal Length by Species](finalpetalhist.png)
+![Histogram of Sepal Length by Species](finalsepalhist.png)
 
 ### Reflecting on the Data
 After exploring the data, petal and sepal lengths from smallest to largest are Setosa, Versicolor, andVirginica. Negative skew in Setosa and Versicolor petal lengths suggests non-normal distributions. Separating data by species improves model accuracy for species-specific patterns, though it may reduce generalizability. Overall, the data indicate that petal and sepal lengths can help predict species.
@@ -620,169 +622,132 @@ import matplotlib.pyplot as plt
 # Load the iris dataset
 iris_df = pd.read_csv("iris.csv")
 
-# Sepal Length Boxplot
-plt.figure(figsize=(6,4))
-sns.boxplot(x='species', y='sepal_length', data=iris_df)
-plt.title("Sepal Length by Species")
-plt.savefig("sepal_length_boxplot.png")  # Save the image
-plt.show()
+
+#Assigning colors to each species
+species_colors = {
+    "Iris-setosa": "blue",
+    "Iris-versicolor": "orange",
+    "Iris-virginica": "red"
+}
 
 # Petal Length Boxplot
-plt.figure(figsize=(6,4))
-sns.boxplot(x='species', y='petal_length', data=iris_df)
+plt.figure(figsize = (8,5))
+sns.boxplot(x = 'species', y = 'petal_length', hue = "species", palette = species_colors, data = iris_df)
 plt.title("Petal Length by Species")
 plt.savefig("petal_length_boxplot.png")
 plt.show()
 
-species_colors = {
-    "Iris-setosa": "Blues",
-    "Iris-versicolor": "Oranges",
-    "Iris-virginica": "Greens"
-}
+# Sepal Length Boxplot
+plt.figure(figsize = (8,5))
+sns.boxplot(x = 'species', y = 'sepal_length', hue = "species", palette = species_colors, data = iris_df)
+plt.title("Sepal Length by Species")
+plt.savefig("sepal_length_boxplot.png")
+plt.show()\
 
-for sp, color in species_colors.items():
-    plt.figure(figsize=(5,4))
-    subset = iris_df[iris_df['species'] == sp].drop('species', axis=1)
-    corr_matrix = subset.corr()  # <-- create correlation matrix
-    sns.heatmap(corr_matrix, annot=True, cmap=color, vmin=-1, vmax=1)
-    plt.title(f"Correlation Heatmap: {sp}")
-    
-    Heatmaps = f"heatmap_{sp.replace('Iris-', '').lower()}.png"
-    plt.savefig(Heatmaps)
+# Looping through each species 
+for species,color in species_colors.items():
+    plt.figure(figsize=(4,4))
+    subset = iris_df[iris_df['species'] == species].drop('species', axis = 1) # Dropping the non-numeric column for correlation computation
+    corr_matrix = subset.corr()  # Creates the correlation matrix
+    sns.heatmap(corr_matrix, annot = True, cmap = color, vmin = -1, vmax = 1) # Creates the heatmap
+    plt.title(f"{species} Correlation Heatmap: ")
     plt.show()
 ```
-![Box plot of Sepal Length by Species](sepalbox.png)
-![Box Plot of Petal Length by Species](petalbox.png)
-![Heatmap of Correlation Values for Setosa](setosacorr.png)
-![Heatmap of Correlation Values for Versicolor](versicolorcorr.png)
-![Heatmap of Correlation Values for Virginica](virginicacorr.png)
+![Box plot of Petal Length by Species](finalpetalbox.png)
+![Box Plot of Sepal Length by Species](finalsepalbox.png)
+![Heatmap of Correlation Values for Setosa](finalsetosa.png)
+![Heatmap of Correlation Values for Versicolor](finalversicolor.png)
+![Heatmap of Correlation Values for Virginica](finalvirginica.png)
 
 Boxplots show setosas have the smallest measurements, followed by versicolor and virginica. A few outliers exist but are retained, as they likely reflect natural variations. The heatmaps indicate strong correlations between sepal length and petal width for versicolor and virginica, but low correlation for setosa. Setosa measurements are generally moderate in terms of correlation compared to the other species.
 
 ## Modeling the Data
-The lines of best fit are as follows:
-For Setosa Petal Length vs. Sepal Length:
-The slope is: 0.5360629067245112.
-The y-intercept is: 4.2212039045553125.
-
-For Versicolor Petal Length vs. Sepal Length:
-The slope is: 0.8282809611829947.
-The y-intercept is: 2.4075231053604456.
-
-For Virginica Petal Length vs. Sepal Length:
-The slope is: 0.9957386363636368.
-The y-intercept is: 1.0596590909090882.
-
-```python 
-import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
-from sklearn.linear_model import LinearRegression
-
-# Load data
-iris = pd.read_csv("iris.csv")
-
-# Species color palette
-species_colors = {
-    "Iris-setosa": "blue",
-    "Iris-versicolor": "orange",
-    "Iris-virginica": "green"
-}
-
-# Numeric columns for R² heatmaps
-num_cols = ["sepal_length", "sepal_width", "petal_length", "petal_width"]
-
-# -------------------------
-# Scatterplots with Residuals as points in ONE row
-# -------------------------
-fig, axes = plt.subplots(1, 3, figsize=(18,5))
-
-for ax, (sp, color) in zip(axes, species_colors.items()):
-    subset = iris[iris['species'] == sp]
-    X = subset[['petal_length']]
-    y = subset['sepal_length']
-    
-    # Fit model
-    model = LinearRegression()
-    model.fit(X, y)
-    y_pred = model.predict(X)
-    residuals = y - y_pred
-    
-    # Scatter points for actual data
-    ax.scatter(subset['petal_length'], subset['sepal_length'], color=color, label="Observed")
-    # Regression line
-    ax.plot(subset['petal_length'], y_pred, color='red', linewidth=2, label="Fitted line")
-    # Residuals as points
-    ax.scatter(subset['petal_length'], residuals, color='gray', alpha=0.6, label="Residuals")
-    
-    ax.set_title(f"{sp} Sepal vs Petal")
-    ax.set_xlabel("Petal Length")
-    ax.set_ylabel("Sepal Length / Residuals")
-    ax.legend()
-
-plt.tight_layout()
-plt.savefig("scatter_residuals_points_all_species.png", dpi=300, bbox_inches="tight")
-plt.show()
-```
-![Linear Model and Residuals by Species](lin_model.png)
+We can now fit a regression model for each species. 
 ```python
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
+import numpy as np
 
-# Load data
-iris = pd.read_csv("iris.csv")
-
-species_colors = {
-    "Iris-setosa": "Blues",
-    "Iris-versicolor": "Oranges",
-    "Iris-virginica": "Greens"
-}
-
-# Numeric columns for R² heatmaps
-num_cols = ["sepal_length", "sepal_width", "petal_length", "petal_width"]
+# Load dataset
+iris_df = pd.read_csv("iris.csv")
 
 species_colors = {
-    "Iris-setosa": "Blues",
-    "Iris-versicolor": "Oranges",
-    "Iris-virginica": "Greens"
+    "Iris-setosa": "blue",
+    "Iris-versicolor": "orange",
+    "Iris-virginica": "red"
 }
 
-fig, axes = plt.subplots(1, 3, figsize=(18,5))
+plt.figure(figsize=(8,6))
 
-for ax, (sp, cmap_name) in zip(axes, species_colors.items()):
-    subset = iris[iris['species'] == sp]
-    
-    # Build R² matrix
-    r2_matrix = pd.DataFrame(index=num_cols, columns=num_cols, dtype=float)
-    for col_x in num_cols:
-        for col_y in num_cols:
-            if col_x == col_y:
-                r2_matrix.loc[col_x, col_y] = 1.0
-            else:
-                X = subset[[col_x]]
-                y = subset[col_y]
-                model = LinearRegression()
-                model.fit(X, y)
-                r2_matrix.loc[col_x, col_y] = model.score(X, y)
-    
-    sns.heatmap(
-        r2_matrix.astype(float),
-        annot=True,
-        cmap=cmap_name,  # Use the correct colormap name
-        vmin=0, vmax=1,
-        square=True,
-        cbar=False,
-        ax=ax
-    )
-    ax.set_title(f"{sp} - R² Heatmap")
+# Creating a scatter plot for all data points
+sns.scatterplot(x = "petal_length", y = "sepal_length", data = iris_df, hue = "species", palette=species_colors, s=50, alpha=0.5)
 
-plt.tight_layout()
-plt.savefig("r2_heatmaps_all_species.png", dpi=300, bbox_inches="tight")
+# Determining the axis range 
+x_max = iris_df["petal_length"].max()
+x_range = np.linspace(0, x_max, 100).reshape(-1,1) # Creates 100 evenly spaced between the y-axis and largest x value
+x_range_df = pd.DataFrame(x_range, columns = ["petal_length"]) # Makes sure column name matches the one to be used in the model
+
+# looping through each species
+for species, color in species_colors.items():
+    subset = iris_df[iris_df["species"] == species]
+    x = subset[["petal_length"]]
+    y = subset["sepal_length"]
+    # Creating the regression model
+    model = LinearRegression()
+    model.fit(x, y)
+    # Predict over the full x axis range
+    y_pred = model.predict(x_range_df)
+    # Plotting the model
+    plt.plot(x_range_df, y_pred, color=color, linewidth=2, label=f"{species} fit")
+    
+plt.title("Sepal Length vs Petal Length by Species")
+plt.xlabel("Petal Length (cm)")
+plt.ylabel("Sepal Length (cm)")
+plt.legend()
+plt.show()
+
+# Plotting the residuals
+plt.figure(figsize = (8,6)) 
+             
+for species, color in species_colors.items():
+    subset = iris_df[iris_df["species"] == species]
+    x = subset[["petal_length"]]
+    y = subset["sepal_length"]   
+    # Creating the regression model for each species
+    model = LinearRegression()
+    model.fit(x, y)
+    y_pred_points = model.predict(x) # Finds predicted sepal length
+    residuals = y - y_pred_points # Calculating residuals
+    plt.scatter(y_pred_points, residuals, color = color, alpha = 0.5, label = species) # Plots residuals vs predicted values
+plt.axhline(y = 0, color = 'r', linestyle = '--') # Adds a horizontal dashed line on the x-axis
+plt.xlabel("Predicted Values")
+plt.ylabel("Residuals")
+plt.title("Residuals vs. Predicted Values")
+plt.show()
+
+# Plotting the residuals
+plt.figure(figsize = (8,6)) 
+             
+for species, color in species_colors.items():
+    subset = iris_df[iris_df["species"] == species]
+    x = subset[["petal_length"]]
+    y = subset["sepal_length"]   
+    # Creating the regression model for each species
+    model = LinearRegression()
+    model.fit(x, y)
+    y_pred_points = model.predict(x) # Finds predicted sepal length
+    residuals = y - y_pred_points # Calculating residuals
+    plt.scatter(y_pred_points, residuals, color = color, alpha = 0.5, label = species) # Plots residuals vs predicted values
+plt.axhline(y = 0, color = 'r', linestyle = '--') # Adds a horizontal dashed line on the x-axis
+plt.xlabel("Predicted Values")
+plt.ylabel("Residuals")
+plt.title("Residuals vs. Predicted Values")
 plt.show()
 ```
-![R^2 values by Species](r2_heatmaps_all_species.png)
+![Linear Regression Model by Species](finalchart.png)
+![Residuals vs. predicted Values by Species](finalresidual.png)
 ## Analysis of Models
 Lines of best fit for each species show different slopes and intercepts, suggesting the petal and sepal length relationship depends on species. Residuals for versicolor and virginica are normally distributed, indicating good linear fits, with R² values of 0.56 and 0.74. Setosa shows weak correlation (R² = 0.068) and less randomized residuals, implying petal length minimally predicts sepal length for this species.
 
