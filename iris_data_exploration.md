@@ -3,7 +3,7 @@
 
 ## Introduction
 The Iris dataset contains four measurements from iris flowers: sepal length, sepal width, petal length, and petal width, along with the species label (Setosa, Versicolor, Virginica).  
-**Goal:**  Use SQL to explore the data, summarize key features, and draw insights about differences across species.
+**Goal:**  Use SQL to explore the data, summarize key features, and draw insights about differences across species.  
 **Questions:**
 1) Which measurements are strongly correlated?
 2) How do measurements vary by species?
@@ -709,7 +709,7 @@ plt.legend()
 plt.show()
 
 # Plotting the residuals
-plt.figure(figsize = (8,6)) 
+plt.figure(figsize = (10,8)) 
              
 for species, color in species_colors.items():
     subset = iris_df[iris_df["species"] == species]
@@ -746,7 +746,7 @@ plt.ylabel("Residuals")
 plt.title("Residuals vs. Predicted Values")
 plt.show()
 ```
-![Linear Regression Model by Species](finalchart.png)
+![Linear Regression Model by Species](Linear_model_fit.png)
 ![Residuals vs. predicted Values by Species](finalresidual.png)
 ## Analysis of Models
 Lines of best fit for each species show different slopes and intercepts, suggesting the petal and sepal length relationship depends on species. Residuals for versicolor and virginica are normally distributed, indicating good linear fits, with R² values of 0.56 and 0.74. Setosa shows weak correlation (R² = 0.068) and less randomized residuals, implying petal length minimally predicts sepal length for this species.
