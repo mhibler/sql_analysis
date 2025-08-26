@@ -3,7 +3,8 @@
 
 ## Introduction
 The Iris dataset contains four measurements from iris flowers: sepal length, sepal width, petal length, and petal width, along with the species label (Setosa, Versicolor, Virginica).  
-**Goal:** Use SQL and Matplotlib to explore measurements, identify patterns across species, and model relationships between different measurements.
+**Goal:** Use SQL and Matplotlib to explore measurements, identify patterns across species, and model relationships between different measurements.  
+
 **Questions:**
 1) Which measurements are strongly correlated?
 2) How do measurements vary by species?
